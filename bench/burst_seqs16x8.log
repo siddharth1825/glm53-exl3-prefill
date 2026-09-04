@@ -1,0 +1,11 @@
+[seqs16x8] single cold ~30000: prompt 70505 tok  TTFT 51.2s
+[seqs16x8] burst of 8 x ~30000 tokens: wall 397.0s
+  req 0: prompt 70826 tok  TTFT 264.7s  total 265.3s
+  req 1: prompt 70764 tok  TTFT 181.8s  total 182.6s
+  req 2: prompt 70479 tok  TTFT 172.3s  total 172.8s
+  req 3: prompt 70714 tok  TTFT 181.8s  total 182.4s
+  req 4: prompt 70690 tok  TTFT 373.1s  total 373.5s
+  req 5: prompt 70619 tok  TTFT 346.9s  total 347.4s
+  req 6: prompt 70628 tok  TTFT 346.9s  total 347.4s
+  req 7: prompt 70547 tok  TTFT 396.5s  total 396.9s
+  TTFT first 172.3s  median 346.9s  last 396.5s

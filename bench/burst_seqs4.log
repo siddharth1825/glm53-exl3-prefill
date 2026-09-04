@@ -1,0 +1,7 @@
+[seqs4] burst of 4 x ~30000 tokens: wall 178.6s
+  req 0: prompt None tok  TTFT 48.2s  total 48.5s
+  req 1: prompt None tok  TTFT 93.2s  total 93.7s
+  req 2: prompt None tok  TTFT 178.2s  total 178.5s
+  req 3: prompt None tok  TTFT 138.4s  total 138.9s
+  TTFT first 48.2s  median 138.4s  last 178.2s
+[seqs4] single cold ~30000: prompt None tok  TTFT 44.3s

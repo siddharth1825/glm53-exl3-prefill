@@ -1,0 +1,7 @@
+[seqs16nothr] single cold ~30000: prompt 70524 tok  TTFT 53.1s
+[seqs16nothr] burst of 4 x ~30000 tokens: wall 185.0s
+  req 0: prompt 70666 tok  TTFT 97.3s  total 97.8s
+  req 1: prompt 70468 tok  TTFT 143.5s  total 144.0s
+  req 2: prompt 70491 tok  TTFT 184.4s  total 185.0s
+  req 3: prompt 70578 tok  TTFT 51.0s  total 51.5s
+  TTFT first 51.0s  median 143.5s  last 184.4s

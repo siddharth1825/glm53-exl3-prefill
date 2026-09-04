@@ -1,0 +1,247 @@
+<title>Trellis Prefill Design</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #eef1f4;
+    --surface: #ffffff;
+    --ink: #16202b;
+    --ink-2: #4b5761;
+    --muted: #7a8792;
+    --rule: #d3dae0;
+    --accent: #c9761a;
+    --accent-ink: #8a4c0a;
+    --measure: #2f6fb0;
+    --floor: #7a8792;
+    --good-bg: #e6f1ea;
+    --good-ink: #1f5c39;
+    --warn-bg: #fbeedd;
+    --warn-ink: #8a4c0a;
+    --bad-bg: #f6e3e1;
+    --bad-ink: #8c2f26;
+    --code-bg: #e5e9ed;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #12171c; --surface: #1a2129; --ink: #e4e9ee; --ink-2: #b6c0c9; --muted: #8592a0;
+      --rule: #2c3640; --accent: #e09340; --accent-ink: #f0b872; --measure: #6ea3e0; --floor: #8592a0;
+      --good-bg: #1c3328; --good-ink: #9fd9b5; --warn-bg: #3a2a15; --warn-ink: #f0b872;
+      --bad-bg: #3a1f1c; --bad-ink: #f0a49a; --code-bg: #232c35;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #12171c; --surface: #1a2129; --ink: #e4e9ee; --ink-2: #b6c0c9; --muted: #8592a0;
+    --rule: #2c3640; --accent: #e09340; --accent-ink: #f0b872; --measure: #6ea3e0; --floor: #8592a0;
+    --good-bg: #1c3328; --good-ink: #9fd9b5; --warn-bg: #3a2a15; --warn-ink: #f0b872;
+    --bad-bg: #3a1f1c; --bad-ink: #f0a49a; --code-bg: #232c35;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: 17px; line-height: 1.55;
+  }
+  h1, h2, h3 { font-family: "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif; text-wrap: balance; margin: 0; }
+  h1 { font-size: 2.6rem; font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; }
+  h2 { font-size: 1.55rem; font-weight: 600; margin-top: 3.2rem; margin-bottom: 0.9rem; }
+  h3 { font-size: 1.15rem; font-weight: 600; margin-top: 1.6rem; margin-bottom: 0.4rem; }
+  p { margin: 0 0 1rem; max-width: 68ch; }
+  li { max-width: 68ch; }
+  code, .mono { font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace; font-size: 0.86em; }
+  code { background: var(--code-bg); padding: 0.05em 0.35em; border-radius: 3px; }
+  .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  a { color: var(--measure); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px 96px; }
+  header { padding: 56px 0 28px; border-bottom: 1px solid var(--rule); display: grid; gap: 14px; }
+  header .lede { font-size: 1.15rem; color: var(--ink-2); max-width: 62ch; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--muted); }
+  nav.toc { position: sticky; top: 0; z-index: 2; background: var(--ground); border-bottom: 1px solid var(--rule); padding: 10px 0; display: flex; gap: 4px 18px; flex-wrap: wrap; }
+  nav.toc a { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 0.9rem; text-decoration: none; color: var(--ink-2); }
+  nav.toc a:hover { color: var(--accent-ink); }
+
+  .verdict { margin: 32px 0 0; padding: 22px 26px; background: var(--surface); border-left: 4px solid var(--accent); display: grid; gap: 8px; }
+  .verdict p { max-width: none; margin: 0; }
+  .verdict strong { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 1.1rem; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 28px 0; }
+  .stat { background: var(--surface); padding: 16px 18px; display: grid; gap: 4px; }
+  .stat .n { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 1.9rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat .n small { font-size: 0.95rem; font-weight: 600; color: var(--muted); margin-left: 4px; }
+  .stat .l { font-size: 0.9rem; color: var(--ink-2); }
+
+  .tablewrap { overflow-x: auto; margin: 16px 0 24px; border: 1px solid var(--rule); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
+  th { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.03em; text-transform: uppercase; color: var(--ink-2); background: var(--ground); position: sticky; top: 0; }
+  tr:last-child td { border-bottom: 0; }
+  td.num, th.num { text-align: right; font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.src { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+  .tag { display: inline-block; font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; white-space: nowrap; }
+  .tag.good { background: var(--good-bg); color: var(--good-ink); }
+  .tag.warn { background: var(--warn-bg); color: var(--warn-ink); }
+  .tag.bad { background: var(--bad-bg); color: var(--bad-ink); }
+  tr.pick td { background: color-mix(in srgb, var(--accent) 9%, var(--surface)); }
+
+  figure { margin: 24px 0 8px; background: var(--surface); border: 1px solid var(--rule); padding: 18px 18px 10px; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 0.88rem; color: var(--ink-2); margin-top: 8px; max-width: 80ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; color: var(--ink-2); margin: 4px 0 0; }
+  .legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 8px; background: var(--c); }
+  .legend .dash::before { background: repeating-linear-gradient(90deg, var(--c) 0 4px, transparent 4px 7px); }
+
+  ol.plan { counter-reset: step; list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  ol.plan li { counter-increment: step; display: grid; grid-template-columns: 44px 1fr; gap: 12px; background: var(--surface); border: 1px solid var(--rule); padding: 14px 16px; max-width: none; }
+  ol.plan li::before { content: counter(step); font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--accent); line-height: 1; }
+  ol.plan li p { margin: 0; max-width: none; }
+  ol.plan li p + p { margin-top: 6px; color: var(--ink-2); font-size: 0.95rem; }
+  ul.parked { padding-left: 1.2em; display: grid; gap: 8px; }
+  .note { font-size: 0.92rem; color: var(--ink-2); }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  @media (max-width: 640px) { h1 { font-size: 2rem; } body { font-size: 16px; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Research synthesis · GLM-5.3-Flash on 2× DGX Spark · 2026-09-03</div>
+    <h1>Trellis Prefill Design</h1>
+    <p class="lede">What five sourced reports changed in our model of the problem, the numbers that now bound it, and a ranked design for the MoE prefill kernel. The full reports sit in <code>~/Documents/glm-research-2026-09-03/</code>.</p>
+    <div class="meta"><span>hardware: 2× GB10 · TP=2 · 273 GB/s</span><span>model: 320B / 18B active · 288 experts · top-8</span><span>weights: EXL3 4.05 bpw trellis</span><span>lane: vLLM fork (MiaAI image, built 2026-08-28)</span></div>
+  </header>
+
+  <nav class="toc" aria-label="Sections">
+    <a href="#results">Results</a><a href="#wrong">Corrections</a><a href="#numbers">Numbers</a><a href="#designs">Designs</a><a href="#why">Why earlier attempts stalled</a><a href="#plan">Plan</a><a href="#parked">Parked</a><a href="#open">Open questions</a>
+  </nav>
+
+  <div class="verdict">
+    <strong>Verdict: the prefill was kernel-bound, not bandwidth-bound, and the exact-numerics fix is a weight-stationary trellis GEMM. Built, gated and serving: cold prefill 922 → 1,500 tok/s, TTFT at 32K 27.5 → 16.9 s.</strong>
+    <p>The fused MoE kernel runs at roughly 13–15% of the GB10's bf16 tensor peak because it decodes every weight tile again for every 16 activation rows. Decoding each tile once and sweeping 64–128 rows over it is the design Marlin uses for int4; nobody has shipped it for trellis weights. Estimated MoE time per layer drops from 24 to ~11 ms at 2K-token chunks and from 110 to ~30 ms at 8K, with no change to the model's numerics. Before building it, pull the upstream image: it already carries a +20% fat-expert kernel we do not have.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">76<small>GB</small></div><div class="l">expert weights streamed per GPU per prefill chunk (0.33 s floor)</div></div>
+    <div class="stat"><div class="n">~15<small>TFLOPS</small></div><div class="l">effective rate of the current fused trellis kernel, at every chunk size</div></div>
+    <div class="stat"><div class="n">99.8<small>TFLOPS</small></div><div class="l">measured bf16 tensor peak on GB10 (fp8 and int8: 207.7)</div></div>
+    <div class="stat"><div class="n">99<small>KB</small></div><div class="l">shared memory per block on sm_121; mma.sync only, no WGMMA or TMEM</div></div>
+  </div>
+
+
+  <h2 id="results">Results, 2026-09-03</h2>
+  <p>Built and measured the same day. Row labels match <code>results.json</code> in the Documents benchmark folder; the harness is the one used for the 2026-09-01 matrix (cold prompts with unique salts, medians of three).</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>row</th><th>configuration</th><th class="num">cold 32K tok/s</th><th class="num">TTFT 32K</th><th class="num">cold 8K</th><th class="num">warm 8K</th><th class="num">decode prose / code</th></tr></thead>
+    <tbody>
+      <tr><td class="num">4</td><td>stock image (2026-08-28), chunk 2048</td><td class="num">922</td><td class="num">27.5 s</td><td class="num">862</td><td class="num">1872</td><td class="num">25.3 / 55.1</td></tr>
+      <tr><td class="num">4c</td><td>PR77 image, fat-expert kernel, chunk 2048</td><td class="num">1047</td><td class="num">24.2 s</td><td class="num">961</td><td class="num">2059</td><td class="num">24.1 / 46.3</td></tr>
+      <tr><td class="num">4d</td><td>PR77 image, chunk 7168 (right-sized indexer workspace, utilization 0.87)</td><td class="num">1146</td><td class="num">22.1 s</td><td class="num">1101</td><td class="num">1642</td><td class="num">24.1 / 49.6</td></tr>
+      <tr class="pick"><td class="num">4f</td><td><strong>PR77 image + grouped weight-stationary prefill (design 1), chunk 7168</strong> — now serving</td><td class="num"><strong>1500</strong></td><td class="num"><strong>16.9 s</strong></td><td class="num"><strong>1493</strong></td><td class="num">2148</td><td class="num">24.6 / 47.0</td></tr>
+      <tr><td class="num">4e</td><td>PR77 image, legacy fat path, chunk 2048 (control)</td><td class="num">906</td><td class="num">27.8 s</td><td class="num">856</td><td class="num">1817</td><td class="num">23.1 / 46.8</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Kernel level.</strong> The pipelined mainloop is bit-identical to PR77's kernel and reaches ~75 TFLOPS on the gate|up GEMM at 2048 rows per expert (about 75% of the measured bf16 peak). As one grouped launch over all 288 experts of a real layer with skewed routing, per-layer MoE time went 17.0 → 11.4 ms at 1K tokens, 25.9 → 13.7 at 2K, 48.2 → 20.2 at 4K and 99.3 → 33.2 at 8K, matching the estimate in the design table above.</p>
+  <p><strong>Numerics gate.</strong> True-token prompt logprobs on three fixed texts through the served engine. The grouped path deviates from either upstream path by the same amount the two upstream paths deviate from each other: random-word text 0.18 vs 0.17 nats mean, code 0.003 vs 0.004, digits 0.031 vs 0.027. It sits inside the existing implementation spread. Passed.</p>
+  <p><strong>Open item.</strong> Code decode fell from 55 to about 47 tok/s on every row of the new image, including the legacy-path control, so it came with the pulled image rather than with any kernel. Per-step decode time is 5 to 18% slower than on the 2026-08-28 image; the template now injects a reasoning-effort line unconditionally and the image carries new scheduler and spinwait patches. Not yet isolated.</p>
+  <h2 id="wrong">What we had wrong</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>We worked from</th><th>The research established</th><th>Report</th></tr></thead>
+    <tbody>
+      <tr><td>GLM-5.3-Flash is a 30B-A3B-class model</td><td><strong>320B total, 18B active.</strong> 288 experts × 25.2M params × 42 MoE layers ≈ 304B routed params. At 4 bpw each Spark holds ~76 GB of expert weights and streams all of them every chunk.</td><td class="src">01, 02</td></tr>
+      <tr><td>Prefill is bandwidth-bound, so a 3× faster MoE is ~1.4× prefill</td><td><strong>Prefill is kernel-efficiency-bound.</strong> Weight floor 0.31 s per chunk; bf16 compute floor ~1.45 s per 8K chunk; we measure ~9 s. The MoE sits at 13–15% of the tensor peak.</td><td class="src">01, 02, 04</td></tr>
+      <tr><td>Dequant-once to an fp8 or bf16 scratch buffer is the way to 2×</td><td><strong>Wrong on this hardware.</strong> Writing dequantized experts adds 150–300 GB of traffic per step. exllamav3's dense GEMM already dequantizes once above 144 rows; the missing piece is the weight-stationary trellis mainloop.</td><td class="src">01, 04</td></tr>
+      <tr><td>fp8 W8A8 is "official-FP8-class" numerics</td><td>Only when activations are quantized in the <strong>Hadamard-rotated domain</strong> with per-token 128-groups aligned to the H128 blocks. Our prototype quantized raw activations and got 6.3% error. Rotated <strong>int8</strong> W8A8 is ≈1–1.5% (QuaRot INT8 perplexity 5.50 vs 5.47 fp16) and runs at the fp8 rate on sm_121.</td><td class="src">04</td></tr>
+      <tr><td>DeepSeek-V4-Flash is 2× faster because it is FP8</td><td>Its experts are <strong>native MXFP4</strong> (QAT), the rest FP8. The gap is ≈1.3× fewer active FLOPs (13B vs 18B, top-6 vs top-8) × ≈2× datapath ceiling. Both lanes sit at 15–18% of their own ceilings; expert granularity is identical.</td><td class="src">03</td></tr>
+      <tr><td>Our 900 tok/s is behind the community</td><td>It is the community number for vLLM-EXL3 before PR77 (938 / 997 / 941). SGLang-NVFP4 at ~1,800 is also state of the art. No one has a fundamentally better kernel for this box.</td><td class="src">02, 05</td></tr>
+      <tr><td>A chunk size of 8192 is forbidden (indexer shared memory)</td><td>MiaAI right-sized the indexer workspace (PR #86); their <strong>current default is 7168</strong> with the PR77 fat-expert kernel on.</td><td class="src">05</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="numbers">The numbers that bound the design</h2>
+  <p>Per tensor-parallel rank, per MoE layer: 3.62 G expert parameters, which is 1.81 GB at 4 bpw (6.6 ms of DRAM time), 3.62 GB as int8 or fp8 (13.3 ms), 7.2 GB as fp16 (26.5 ms). Work is 201 MFLOP per token, so 0.41, 0.82 and 1.65 TFLOP at 2K, 4K and 8K tokens.</p>
+
+  <figure>
+    <svg viewBox="0 0 760 320" role="img" aria-label="MoE time per layer versus chunk size: current kernel, weight-stationary estimate, and the two floors">
+      <g font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--muted)">
+        <line x1="64" y1="24" x2="64" y2="262" stroke="var(--rule)"/>
+        <line x1="64" y1="262" x2="736" y2="262" stroke="var(--rule)"/>
+        <g stroke="var(--rule)" stroke-dasharray="2 4">
+          <line x1="64" y1="222.3" x2="736" y2="222.3"/><line x1="64" y1="182.7" x2="736" y2="182.7"/><line x1="64" y1="143" x2="736" y2="143"/><line x1="64" y1="103.3" x2="736" y2="103.3"/><line x1="64" y1="63.7" x2="736" y2="63.7"/><line x1="64" y1="24" x2="736" y2="24"/>
+        </g>
+        <text x="56" y="266" text-anchor="end">0</text><text x="56" y="226" text-anchor="end">20</text><text x="56" y="187" text-anchor="end">40</text><text x="56" y="147" text-anchor="end">60</text><text x="56" y="107" text-anchor="end">80</text><text x="56" y="68" text-anchor="end">100</text><text x="56" y="28" text-anchor="end">120</text>
+        <text x="20" y="150" transform="rotate(-90 20 150)" text-anchor="middle">ms per MoE layer, per rank</text>
+        <text x="136" y="284" text-anchor="middle">1K</text><text x="336" y="284" text-anchor="middle">2K</text><text x="536" y="284" text-anchor="middle">4K</text><text x="736" y="284" text-anchor="middle">8K</text>
+        <text x="436" y="306" text-anchor="middle">tokens in the prefill chunk</text>
+      </g>
+      <!-- y = 262 - v*1.9833 ; x: 1K 136, 2K 336, 4K 536, 8K 736 -->
+      <polyline fill="none" stroke="var(--floor)" stroke-width="2" stroke-dasharray="5 4" points="136,248.9 336,248.9 536,248.9 736,248.9"/>
+      <polyline fill="none" stroke="var(--floor)" stroke-width="2" stroke-dasharray="2 4" points="136,258 336,253.9 536,245.7 736,229.3"/>
+      <polyline fill="none" stroke="var(--accent)" stroke-width="3" points="136,242.2 336,239.2 536,224.3 736,202.5"/>
+      <polyline fill="none" stroke="var(--measure)" stroke-width="3" points="136,234.2 336,214.4 536,154.9 736,43.8"/>
+      <g fill="var(--measure)"><circle cx="136" cy="234.2" r="4"/><circle cx="336" cy="214.4" r="4"/><circle cx="536" cy="154.9" r="4"/><circle cx="736" cy="43.8" r="4"/></g>
+      <g fill="var(--accent)"><circle cx="136" cy="242.2" r="4"/><circle cx="336" cy="239.2" r="4"/><circle cx="536" cy="224.3" r="4"/><circle cx="736" cy="202.5" r="4"/></g>
+      <g font-family="IBM Plex Mono, monospace" font-size="12" font-variant-numeric="tabular-nums">
+        <text x="724" y="40" text-anchor="end" fill="var(--measure)">110 ms measured</text>
+        <text x="724" y="199" text-anchor="end" fill="var(--accent-ink)">~30 ms estimate</text>
+        <text x="352" y="210" fill="var(--measure)">24</text>
+        <text x="352" y="236" fill="var(--accent-ink)">~11</text>
+        <text x="72" y="244" fill="var(--floor)">DRAM floor 6.6 ms</text>
+        <text x="600" y="226" fill="var(--floor)">bf16 compute floor</text>
+      </g>
+    </svg>
+    <div class="legend"><span style="--c: var(--measure)">current fused trellis kernel (measured, op harness)</span><span style="--c: var(--accent)">weight-stationary design, mid estimate</span><span class="dash" style="--c: var(--floor)">floors: DRAM 6.6 ms; bf16 at 100 TFLOPS</span></div>
+    <figcaption>The measured line is linear in tokens because every 16-row pass re-decodes all 1.81 GB of trellis weights. The design estimate assumes 60–75% of the bf16 mma.sync rate with 99 KB of shared memory, the one unmeasured input. The MoE is about 63% of a prefill step, so at 8K-token chunks the step shrinks by roughly 1.8×.</figcaption>
+  </figure>
+
+  <p class="note">Step anatomy from the image authors' profile at 1024-token chunks: MoE forward 63%, dense GEMMs 10%, NCCL allreduce 7%, KDA 6%, sparse attention 4%. On our box the mHC hyper-connection kernels are confirmed fused (TileLang JIT is active on sm_121), so they are not a hidden cost.</p>
+
+  <h2 id="designs">Ranked designs for the MoE prefill kernel</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>Design</th><th class="num">2K</th><th class="num">8K</th><th>Numerics</th><th>Effort</th><th>Read</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td class="num">0</td><td><strong>Pull the MiaAI image with PR77</strong> (E2 fat-expert kernels: rows sorted by expert, batched fat-expert GEMM) and run chunk size 7168, the upstream default.</td><td class="num" colspan="2">+20% end-to-end prefill (941→1,132 at 8K; 1,023→1,242 at 100K)</td><td><span class="tag good">exact</span></td><td>redeploy only</td><td>measured upstream</td></tr>
+      <tr class="pick"><td class="num">1</td><td><strong>Weight-stationary trellis GEMM.</strong> Stage one expert's activation rows (64–128) in shared memory via cp.async; decode each 16×16 trellis tile once into <code>m16n8k16</code> fragments and reuse it across the whole pass; per-expert grid with the existing ticket scheduler.</td><td class="num">≈10–13 ms<br><span class="note">now 24</span></td><td class="num">≈25–35 ms<br><span class="note">now 110</span></td><td><span class="tag good">exact</span></td><td>medium: mainloop rewrite</td><td>high on direction, medium on magnitude</td></tr>
+      <tr><td class="num">2</td><td><strong>Rotated-domain int8 W8A8.</strong> Decode W′ to int8 with a per-row scale (W′ is near-Gaussian in the rotated domain); fuse gather, sign vector, H128 and per-token 128-group int8 quantization of x; <code>m16n8k32.s8</code> grouped GEMM with int32→fp32 promotion per 128-k; H128 and the output signs in the epilogue.</td><td class="num">≈23 ms</td><td class="num">≈31 ms</td><td><span class="tag warn">≈1–1.5%, KLD gate</span></td><td>medium-high: three kernels</td><td>high on numerics, medium on speed</td></tr>
+      <tr><td class="num">3</td><td>Design 1 with int8 MMA: decode trellis straight to int8 fragments, int8 activations in the gather, twice the fp16 rate.</td><td class="num">≈8–10 ms</td><td class="num">≈20–25 ms</td><td><span class="tag warn">≈1%</span></td><td>high</td><td>medium</td></tr>
+      <tr><td class="num">4</td><td>Repair our fp8 Triton prototype: quantize in the rotated domain, tune the config within 99 KB of shared memory.</td><td class="num">≈40 ms</td><td class="num">≈45 ms</td><td><span class="tag bad">≈4%</span></td><td>low</td><td>stopgap only</td></tr>
+      <tr><td class="num">5</td><td>NVFP4 W4A4 via FlashInfer b12x or CUTLASS SM120 grouped GEMM. Requires re-quantizing the trellis weights (double quantization) and 4-bit activations.</td><td class="num" colspan="2">120–154 TFLOPS grouped, measured on GB10</td><td><span class="tag bad">worse than EXL3</span></td><td>medium</td><td>not recommended</td></tr>
+      <tr><td class="num">6</td><td>Convert experts to GPTQ int4 and use Marlin MoE (≈fp16 GEMM speed up to 1024 rows per expert).</td><td class="num" colspan="2">same fp16 ceiling as design 1</td><td><span class="tag bad">KLD 0.025 → ~0.05 class</span></td><td>medium</td><td>not recommended</td></tr>
+    </tbody>
+  </table></div>
+  <p>With design 1 and PR77's row sorting at 7168-token chunks, the cold-prefill estimate is 1,600–1,900 tok/s from today's 900, at the EXL3 4 bpw quality (KLD 0.025 against the teacher, versus 0.04–0.06 for NVFP4). That is parity with the SGLang NVFP4 lane without giving up the quantization.</p>
+
+  <h2 id="why">Why the earlier attempts stalled</h2>
+  <h3>M-tiling to 64 rows in the same kernel</h3>
+  <p>Correct but not faster. It kept the existing structure: B decoded per pass into a register file already at 128 registers with spills, 33% occupancy and 31% of stalls on barriers. Design 1 is not a bigger M inside the same loop. It is Marlin's loop: the activation tile stationary in shared memory, decoded weight fragments held across the pass, a deep cp.async pipeline. The budget fits: 128×128 fp32 accumulators are 64 registers per thread across 256 threads, and two 128-row × 128-k fp16 activation stages take 64 KB of the 99 KB.</p>
+  <h3>Occupancy and pipeline-depth variants</h3>
+  <p>+10–14% on the kernel, +3% end to end. That confirms the kernel is stall-bound rather than decode-throughput-bound, so only a mainloop redesign changes it.</p>
+  <h3>fp8 dequant-once</h3>
+  <p>6.3% error because the activations were quantized before the Hadamard rotation, and the scratch traffic makes the path a net loss below about 4K tokens regardless.</p>
+
+  <h2 id="plan">Plan, kernel scope</h2>
+  <ol class="plan">
+    <li><p><strong>Redeploy from the upstream image with PR77</strong> (<code>EXL3_FAT_KERNEL=1</code>, chunk size 7168) and re-run our benchmark harness so the +20% and the larger chunk are measured on our box rather than assumed.</p><p>The image also carries the reasoning-effort prefix-cache fix (#63) and the indexer workspace right-sizing (#86).</p></li>
+    <li><p><strong>Read <code>exl3_fat_gemm.cu</code></strong> in that image before writing anything. If E2 already stages activation rows in shared memory, design 1 is an extension of it; if it still re-decodes per 16 rows, design 1 replaces its mainloop.</p></li>
+    <li><p><strong>Build design 1</strong> as a mainloop rewrite in the op harness first. Gate: fp16-noise equality with the reference loop, then the logprob/KLD gate on the served model.</p><p>Temperature-0 diffs are not a usable gate here: the stock engine reproduces only 10 of 12 prompts against itself.</p></li>
+    <li><p><strong>Decide on int8 (designs 2 and 3) only afterwards</strong>, and only if design 1 lands short of ~25 ms at 8K and the KLD budget allows ~1% activation error.</p></li>
+    <li><p><strong>Do not spend time on</strong> fp8 W8A8 (numerics), NVFP4 re-quantization (quality), Marlin conversion (quality), or dequantizing to memory (bandwidth).</p></li>
+  </ol>
+
+  <h2 id="parked">Findings outside the kernel scope</h2>
+  <p>Each of these addresses the original time-to-first-token complaint without touching model capability. Listed, not acted on.</p>
+  <ul class="parked">
+    <li><code>--long-prefill-token-threshold 1024</code>: on this exact stack, concurrent sessions froze 440 s behind one long prefill and dropped to 18–25 s with the flag, at ~10% cost to the long prefill (MiaAI issue #110). vLLM V1 has no other partial-prefill control.</li>
+    <li><code>MAX_NUM_SEQS=4</code> is the recipe's choice, not an engine limit. 8–12 is safe; above 12 hits the MTP profiling bug (#88). The KV pool is block-allocated, so a 1M context does not reserve 1M tokens per sequence.</li>
+    <li>Cloudflare 524: SSE heartbeat comments during prefill reset the 100 s timer; grey-clouding the host removes it entirely.</li>
+    <li>DFlash2 turns negative beyond about 6 concurrent streams on two GB10s; <code>num_speculative_tokens_per_batch_size</code> tapers the draft length with batch size. The drafter checkpoint is CC BY-NC-ND.</li>
+    <li>Spec-decode drafter state fragments the hybrid KDA+MLA cache and can halve long-prefill speed after mixed workloads; <code>--mixed-prefill-token-cap -1</code> helped in the NVIDIA forum thread.</li>
+    <li>Expert parallelism (EP=2) instead of tensor parallelism for the experts keeps full 2048-wide expert shapes and replaces two allreduces per layer with one all-to-all. The 2× RTX PRO 6000 EXL3 recipe runs this way at 4,200–6,200 tok/s. Worth a look after design 1.</li>
+    <li>Prefix caching on this hybrid hits only at 2304–3584-token page boundaries in align mode; <code>--prefix-match-unit</code> and the retention interval control it.</li>
+    <li>NCCL runs at roughly 10 GB/s effective without GPUDirect RDMA; allreduce is about 7% of a step.</li>
+  </ul>
+
+  <h2 id="open">Open questions</h2>
+  <ul class="parked">
+    <li>The realistic fp16 mma.sync efficiency on GB10 with 99 KB of shared memory. The design assumes 60–75% of 100 TFLOPS; the first kernel prototype answers this.</li>
+    <li>Whether PR77's E2 kernels already stage activation rows in shared memory.</li>
+    <li>Which KDA backend our image actually runs on sm_121 (Triton FLA assumed; 6% of the step for 0.7% of the FLOPs).</li>
+  </ul>
+</div>

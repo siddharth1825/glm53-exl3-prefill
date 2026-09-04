@@ -1,0 +1,122 @@
+{
+ "What is 19*21? Reply with just the number.": {
+  "content": "399",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 25,
+   "total_tokens": 85,
+   "completion_tokens": 60,
+   "prompt_tokens_details": null
+  }
+ },
+ "Write a Python function that merges two sorted lists into one sorted list, with type hints.": {
+  "content": "",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 30,
+   "total_tokens": 286,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ },
+ "Explain in plain prose how a hash map handles collisions.": {
+  "content": "",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 24,
+   "total_tokens": 280,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ },
+ "List three differences between TCP and UDP as bullet points.": {
+  "content": "",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 23,
+   "total_tokens": 279,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ },
+ "Translate to French: 'The library closes at nine on weekdays.'": {
+  "content": "**La biblioth\u00e8que ferme \u00e0 neuf heures en semaine.",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 25,
+   "total_tokens": 281,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ },
+ "Given the JSON {\"a\": 3, \"b\": [1,2,3]}, what is the sum of all numbers? Show your reasoning briefly.": {
+  "content": "**Sum = 9**\n\n**Reasoning:**\n- Value of `\"a\"`: **3**\n- Values in array `\"b\"`: **1 + 2 + 3 = 6**\n- Total: 3 + 6 = **9**",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 44,
+   "total_tokens": 191,
+   "completion_tokens": 147,
+   "prompt_tokens_details": null
+  }
+ },
+ "Write a haiku about a GPU kernel.": {
+  "content": "",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 21,
+   "total_tokens": 277,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ },
+ "What is the derivative of x^3 * sin(x)?": {
+  "content": "",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 24,
+   "total_tokens": 280,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ },
+ "Summarize the plot of Hamlet in two sentences.": {
+  "content": "",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 24,
+   "total_tokens": 280,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ },
+ "Write a bash one-liner that counts lines in all .py files under the current directory.": {
+  "content": "",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 31,
+   "total_tokens": 287,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ },
+ "A train leaves at 3:15pm and the trip takes 2h50m. When does it arrive?": {
+  "content": "**6:05pm**\n\n- Add 2 hours: 3:15pm \u2192 5:15pm\n- Add 50 minutes: 5:15pm \u2192 6:05pm",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 36,
+   "total_tokens": 140,
+   "completion_tokens": 104,
+   "prompt_tokens_details": null
+  }
+ },
+ "Name the capital of Australia and one fact about it.": {
+  "content": "",
+  "reasoning": "",
+  "usage": {
+   "prompt_tokens": 23,
+   "total_tokens": 279,
+   "completion_tokens": 256,
+   "prompt_tokens_details": null
+  }
+ }
+}
